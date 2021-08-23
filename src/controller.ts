@@ -9,5 +9,6 @@ export const getEntities = (_req: express.Request, res: express.Response) => {
 
 export const setEntity = (req: express.Request, res: express.Response) => {
     // return res.send(bl.setEntity(req.body)) // produce error
-    return res.send(bl.setEntity(req.body))
+    bl.setEntity(req.body)
+    return res.send(200)
 }

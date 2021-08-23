@@ -7,7 +7,6 @@ export namespace bl {
     }
 
     export const setEntity = (entity: any) => {
-        console.log('setEntity: entity: ', entity)
         return true
     }
 }

@@ -1,5 +1,6 @@
-import { app } from '../../src/server'
 import supertest from 'supertest'
+import L from 'lodash'
+import { app } from '../../src/server'
 
 describe("test get entity", () => {
   it("/GET /api/v1/entity", async () => {
@@ -13,24 +14,32 @@ describe("test get entity", () => {
   })
 })
 
-const wrongFormatEntity = {
-  propA: 5,
+const entity = {
+  propA: 'someprop',
   propB: [1,2,3,4]
 }
-const anotherWrongFormatEntity = {
-  propA: "wohoo",
-  propB: []
-}
+
 describe("test post entity", () => {
+  it("[ok - /POST /api/v1/entity]", async () => {
+    await supertest(app)
+      .post('/api/v1/entity')
+      .send(entity)
+      .expect(200)
+  })
   it("[error - /POST /api/v1/entity - wrong entity format]", async () => {
     await supertest(app)
       .post('/api/v1/entity')
-      .send(wrongFormatEntity)
+      .send(L.set(entity, 'propA', 5))
       .expect(400)
     
     await supertest(app)
       .post('/api/v1/entity')
-      .send(anotherWrongFormatEntity)
+      .send(L.set(entity, 'propB', []))
+      .expect(400)
+    
+    await supertest(app)
+      .post('/api/v1/entity')
+      .send(L.set(entity, 'propB', 'not an array'))
       .expect(400)
   })
 })
