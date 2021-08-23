@@ -1,0 +1,57 @@
+openapi: 3.0.1
+info:
+  title: Spectral API
+  description: Spectral API
+  version: 1.0.0
+servers:
+- url: /api/v1
+paths:
+  /entity:
+    get:
+      summary: get entities.
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema: 
+                # $ref: '#/components/schemas/responseEntities'
+                $ref: '#/components/schemas/entity'
+    post:
+      summary: add new entity.
+      requestBody:
+        description: add new entity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/entity'
+      responses:
+        200:
+          description: OK
+
+
+components:
+  schemas:
+    entity:
+      type: object
+      required: [propA, propB]
+      properties:
+        propA:
+          type: string
+        propB:
+          type: array
+          items: 
+            type: number
+    responseEntity:
+        allOf:
+          - $ref: '#/components/schemas/entity'
+          - type: object
+            properties:
+              id:
+                type: string
+              additionalProp:
+                type: string
+    responseEntities:
+      type: array
+      items:
+      $ref: '#/components/schemas/responseEntity'
